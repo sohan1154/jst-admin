@@ -14,8 +14,8 @@ class EditProfile extends React.Component {
 
         this.state = {
             formData: {
-                email: '',
-                address: '',
+                // name: '',
+                // email: '',
                 mobile: '',
             }, // Contains form data
             errors: {}, // Contains field errors
@@ -71,7 +71,7 @@ class EditProfile extends React.Component {
         });
     }
 
-    validateLoginForm = (e) => {
+    validateForm = (e) => {
 
         let errors = {};
         const { formData } = this.state;
@@ -108,7 +108,7 @@ class EditProfile extends React.Component {
             errors: {},
         });
 
-        let errors = this.validateLoginForm();
+        let errors = this.validateForm();
         console.log('errors::::::', errors)
 
         if (!errors) {
@@ -124,13 +124,13 @@ class EditProfile extends React.Component {
 
                         let userInfo = currentUser;
                         userInfo.name = formData.name;
-                        userInfo.email = formData.email;
+                        // userInfo.email = formData.email;
                         userInfo.mobile = formData.mobile;
-                        userInfo.address = formData.address;
                         console.log('userInfo:', userInfo)
 
                         GlobalProvider.setUser(userInfo);
                         GlobalProvider.successMessage(response.message);
+                        this.props.history.push('/dashboard');
                     } else {
                         this.setState({
                             formSubmitted: false,
@@ -195,32 +195,24 @@ class EditProfile extends React.Component {
                                                             <input type="text" className="form-control" name="name" defaultValue={formData.name} onKeyUp={this.handleChange} />
                                                             {errors.name && <span className="error">{errors.name}</span>}
                                                         </div>
+                                                    </div>
+                                                    <div className="form-row">
                                                         <div className="form-group col-md-6">
                                                             <label for="inputEmail4">Email</label>
-                                                            <input type="email" className="form-control" name="email" defaultValue={formData.email} onKeyUp={this.handleChange} />
+                                                            <input type="email" className="form-control" name="email" defaultValue={formData.email} onKeyUp={this.handleChange} readOnly />
                                                             {errors.email && <span className="error">{errors.email}</span>}
                                                         </div>
                                                     </div>
                                                     <div className="form-row">
-                                                        <div className="form-group col-md-6">
-                                                            <label for="asd">Username</label>
-                                                            <input type="text" className="form-control" name="username" defaultValue={formData.username} readOnly />
-                                                        </div>
                                                         <div className="form-group col-md-6">
                                                             <label for="inputPassword4">Mobile</label>
                                                             <input type="phone" className="form-control" name="mobile" defaultValue={formData.mobile} onKeyUp={this.handleChange} />
                                                             {errors.mobile && <span className="error">{errors.mobile}</span>}
                                                         </div>
                                                     </div>
-                                                    <div className="form-group">
-                                                        <label for="inputAddress">Address</label>
-                                                        <input type="text" className="form-control" name="address" defaultValue={formData.address} onKeyUp={this.handleChange} />
-                                                        {errors.address && <span className="error">{errors.address}</span>}
-                                                    </div>
-
                                                     <button type="submit" className="btn btn-primary btn-cta" disabled={loading}>{loading ? 'Waiting...' : 'Submit'}</button>
                                                     &nbsp;&nbsp;
-                                                    <a href={"/sub-admins"} className="btn btn-dark btn-cta">Cancel</a>
+                                                    <a href={"/dashboard"} className="btn btn-dark btn-cta">Cancel</a>
 
                                                 </form>
 

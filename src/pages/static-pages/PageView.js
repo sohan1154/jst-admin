@@ -6,7 +6,7 @@ import * as ApisService from "../../providers/apis/apis";
 import { Roller } from "react-awesome-spinners";
 import SideMenuData from '../../components/elements/SideMenuData';
 
-class PlayerView extends React.Component {
+class PageView extends React.Component {
 
     constructor(props) {
         super(props);
@@ -23,17 +23,17 @@ class PlayerView extends React.Component {
 
         let id = this.props.match.params.id;
 
-        this.getAccountDetail(id);
+        this.getDetail(id);
     }
 
-    getAccountDetail = (id) => {
+    getDetail = (id) => {
 
         this.setState({
             loading: true,
             errors: {},
         });
 
-        ApisService.getPlayerAccountDetail(id)
+        ApisService.getPageDetail(id)
             .then(response => {
 
                 if (response.status) {
@@ -68,7 +68,7 @@ class PlayerView extends React.Component {
                             <div className="container">
                                 <div className="row p-b-60 p-t-60">
                                     <div className="col-lg-8 mx-auto text-white p-b-30">
-                                        <h3>Player Form </h3>
+                                        <h3>Page Form </h3>
                                     </div>
                                 </div>
                             </div>
@@ -76,39 +76,54 @@ class PlayerView extends React.Component {
                         <section className="pull-up">
                             <div className="container">
                                 <div className="row ">
-                                    <div className="col-lg-8 mx-auto  mt-2">
+                                    <div className="col-lg-12 mx-auto  mt-2">
+
+                                    
                                         <div className="card py-3 m-b-30">
                                             <div className="card-body">
+                                        
                                                 <form>
                                                     <h3 className="">Information</h3>
                                                     
                                                     <div className="form-row">
                                                         <div className="form-group col-md-6">
-                                                            <label>Name</label>
-                                                            <input type="text" value={detail.name} className="form-control" readOnly />
+                                                            <label>Title</label>
+                                                            <input type="text" value={detail.title} className="form-control" readOnly />
                                                         </div>
                                                         <div className="form-group col-md-6">
-                                                            <label>Email</label>
-                                                            <input type="email" value={detail.email} className="form-control" readOnly />
+                                                            <label>Page Key</label>
+                                                            <input type="text" value={detail.page_key} className="form-control" readOnly />
                                                         </div>
                                                     </div>
                                                     <div className="form-row">
                                                         <div className="form-group col-md-6">
-                                                            <label>Username</label>
-                                                            <input type="text" value={detail.username} className="form-control" readOnly />
+                                                            <label>Category</label>
+                                                            <input type="text" value={detail.category} className="form-control" readOnly />
                                                         </div>
+                                                    </div>
+                                                    <div className="form-row">
+                                                        <div className="form-group col-md-12">
+                                                            <label>Description</label>
+                                                            <textarea type="text" value={detail.description} className="form-control" rows="40" readOnly></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div className="form-row">
+                                                        <div className="form-group col-md-12">
+                                                            <label>Meta Key</label>
+                                                            <textarea type="text" value={detail.meta_key} className="form-control" readOnly></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div className="form-row">
+                                                        <div className="form-group col-md-12">
+                                                            <label>Meta Description</label>
+                                                            <textarea type="text" value={detail.meta_description} className="form-control" rows="5" readOnly></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div className="form-row">
                                                         <div className="form-group col-md-6">
-                                                            <label>Mobile</label>
-                                                            <input type="text" value={detail.mobile} className="form-control" readOnly />
+                                                            <label>Status</label>
+                                                            <input type="text" value={detail.status_for_display} className="form-control" readOnly />
                                                         </div>
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <label>Address</label>
-                                                        <input type="text" value={detail.address} className="form-control" readOnly />
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <label>Available Credit</label>
-                                                        <input type="text" value={detail.credit} className="form-control" readOnly />
                                                     </div>
                                                     <div className="form-row">
                                                         <div className="form-group col-md-6">
@@ -121,9 +136,9 @@ class PlayerView extends React.Component {
                                                         </div>
                                                     </div>
                                                     
-                                                    <a href={"/players-edit/"+detail.id} className="btn btn-success btn-cta">Edit</a>
+                                                    <a href={"/pages-edit/"+detail.id} className="btn btn-success btn-cta">Edit</a>
                                                     &nbsp;&nbsp;
-                                                    <a href={"/players"} className="btn btn-dark btn-cta">Back</a>
+                                                    <a href={"/pages"} className="btn btn-dark btn-cta">Back</a>
 
                                                 </form>
                                             </div>
@@ -144,4 +159,4 @@ class PlayerView extends React.Component {
     }
 }
 
-export default PlayerView;
+export default PageView;

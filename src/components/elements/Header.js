@@ -106,7 +106,7 @@ class Header extends React.Component {
                                 aria-haspopup="true" aria-expanded="false">
                                 <div className="avatar avatar-sm avatar-online">
                                     <span className="avatar-title rounded-circle bg-dark">
-                                        <img className="admin-brand-logo" src="/assets/logos/logo.png" width="40" title={currentUser.role} />
+                                        <img className="admin-brand-logo" src="/assets/logos/logo.jpeg" width="40" title={currentUser.role} />
                                     </span>
                                 </div>
                             </a>

@@ -7,7 +7,7 @@ import * as ApisService from "../../providers/apis/apis";
 import { Roller } from "react-awesome-spinners";
 import SideMenuData from '../../components/elements/SideMenuData';
 
-class PlayersArchive extends React.Component {
+class ContactUs extends React.Component {
 
     constructor(props) {
         super(props);
@@ -22,17 +22,17 @@ class PlayersArchive extends React.Component {
 
     componentDidMount() {
 
-        this.getArchiveUsers('Player');
+        this.getData();
     }
 
-    getArchiveUsers = (role) => {
+    getData = () => {
 
         this.setState({
             loading: true,
             errors: {},
         });
 
-        ApisService.getPlayerArchiveUsers(role)
+        ApisService.getContactUs()
             .then(response => {
 
                 if (response.status) {
@@ -57,43 +57,6 @@ class PlayersArchive extends React.Component {
             });
     }
 
-    restoreAccount = (id, index) => {
-
-        let _this = this;
-
-        GlobalProvider.confirmBox("Are you Sure? You want to restore this account.", (isTrue) => {
-            if (isTrue) {
-                ApisService.restorePlayerAccount(id)
-                    .then(response => {
-
-                        if (response.status) {
-
-                            // remove item from array 
-                            const { entries } = _this.state;
-
-                            let entriesNew = entries.filter((item) => {
-                                if (item.id != id) {
-                                    return item;
-                                }
-                            });
-
-                            _this.setState({
-                                entries: entriesNew,
-                            });
-
-                            GlobalProvider.successMessage(response.message);
-
-                        } else {
-                            GlobalProvider.errorMessage(response.message);
-                        }
-
-                    }).catch(error => {
-                        GlobalProvider.errorMessage(error.message);
-                    });
-            }
-        })
-    }
-
     render() {
 
         const { entries, loading } = this.state;
@@ -112,7 +75,7 @@ class PlayersArchive extends React.Component {
                             <div className="container  m-b-30">
                                 <div className="row">
                                     <div className="col-12 text-white p-t-40 p-b-90">
-                                        <h4 className="">Archived Players</h4>
+                                        <h4 className="">Contact Us</h4>
                                     </div>
                                 </div>
                             </div>
@@ -134,10 +97,10 @@ class PlayersArchive extends React.Component {
                                                     <table id="example-height" className="table   " style={{ width: "100%" }}>
                                                         <thead>
                                                             <tr>
-                                                                <th>Name</th>
-                                                                <th>Username</th>
-                                                                <th>Mobile</th>
-                                                                <th>Address</th>
+                                                                <th>SN.</th>
+                                                                <th>User Name</th>
+                                                                <th>Subject</th>
+                                                                <th>Date Time</th>
                                                                 <th>Actions</th>
                                                             </tr>
                                                         </thead>
@@ -145,12 +108,12 @@ class PlayersArchive extends React.Component {
 
                                                             {entries.map((item, index) =>
                                                                 <tr key={item.id} id={'RecordID_' + item.id}>
-                                                                    <td>{item.name}</td>
-                                                                    <td>{item.username}</td>
-                                                                    <td>{item.mobile}</td>
-                                                                    <td>{item.address}</td>
+                                                                    <td>{count++}</td>
+                                                                    <td>{item.user_name}</td>
+                                                                    <td>{item.subject}</td>
+                                                                    <td>{item.created_at}</td>
                                                                     <td>
-                                                                        <button className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-success" title="Restore" onClick={() => this.restoreAccount(item.id, index)}><i className="mdi mdi-restore"></i></button>
+                                                                        <a href={"/contact-us-view/" + item.id} className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-info" title="Detail"><i className="mdi mdi-eye"></i></a>
                                                                     </td>
                                                                 </tr>
                                                             )}
@@ -175,4 +138,4 @@ class PlayersArchive extends React.Component {
     }
 }
 
-export default PlayersArchive;
+export default ContactUs;

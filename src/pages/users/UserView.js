@@ -6,7 +6,7 @@ import * as ApisService from "../../providers/apis/apis";
 import { Roller } from "react-awesome-spinners";
 import SideMenuData from '../../components/elements/SideMenuData';
 
-class MasterView extends React.Component {
+class UserView extends React.Component {
 
     constructor(props) {
         super(props);
@@ -33,7 +33,7 @@ class MasterView extends React.Component {
             errors: {},
         });
 
-        ApisService.getMasterAccountDetail(id)
+        ApisService.getUserAccountDetail(id)
             .then(response => {
 
                 if (response.status) {
@@ -68,7 +68,7 @@ class MasterView extends React.Component {
                             <div className="container">
                                 <div className="row p-b-60 p-t-60">
                                     <div className="col-lg-8 mx-auto text-white p-b-30">
-                                        <h3>Master Form </h3>
+                                        <h3>Sub Admin Form </h3>
                                     </div>
                                 </div>
                             </div>
@@ -94,30 +94,22 @@ class MasterView extends React.Component {
                                                     </div>
                                                     <div className="form-row">
                                                         <div className="form-group col-md-6">
-                                                            <label>Username</label>
-                                                            <input type="text" value={detail.username} className="form-control" readOnly />
-                                                        </div>
-                                                        <div className="form-group col-md-6">
                                                             <label>Mobile</label>
                                                             <input type="text" value={detail.mobile} className="form-control" readOnly />
                                                         </div>
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <label>Address</label>
-                                                        <input type="text" value={detail.address} className="form-control" readOnly />
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <label>Available Credit</label>
-                                                        <input type="text" value={detail.credit} className="form-control" readOnly />
+                                                        <div className="form-group col-md-6">
+                                                            <label>Gender</label>
+                                                            <input type="text" value={detail.gender} className="form-control" readOnly />
+                                                        </div>
                                                     </div>
                                                     <div className="form-row">
                                                         <div className="form-group col-md-6">
-                                                            <label>Margin in %</label>
-                                                            <input type="text" value={detail.margin_per} className="form-control" readOnly />
+                                                            <label>DOB</label>
+                                                            <input type="text" value={detail.dob} className="form-control" readOnly />
                                                         </div>
                                                         <div className="form-group col-md-6">
-                                                            <label for="inputPassword4">Margin in fix</label>
-                                                            <input type="text" value={detail.margin_fix} className="form-control" readOnly />
+                                                            <label>Status</label>
+                                                            <input type="text" value={detail.status_for_display} className="form-control" readOnly />
                                                         </div>
                                                     </div>
                                                     <div className="form-row">
@@ -131,9 +123,9 @@ class MasterView extends React.Component {
                                                         </div>
                                                     </div>
                                                     
-                                                    <a href={"/masters-edit/"+detail.id} className="btn btn-success btn-cta">Edit</a>
+                                                    <a href={"/users-edit/"+detail.id} className="btn btn-success btn-cta">Edit</a>
                                                     &nbsp;&nbsp;
-                                                    <a href={"/masters"} className="btn btn-dark btn-cta">Back</a>
+                                                    <a href={"/users"} className="btn btn-dark btn-cta">Back</a>
 
                                                 </form>
                                             </div>
@@ -154,4 +146,4 @@ class MasterView extends React.Component {
     }
 }
 
-export default MasterView;
+export default UserView;

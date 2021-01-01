@@ -32,6 +32,13 @@ export const isEmpty = (thing) => {
                 empty = true;
             }
             break;
+        case 'number':
+            if (thing === null) {
+                empty = true;
+            } else if (!thing) {
+                empty = true;
+            }
+            break;
         default:
             empty = true;
     }
@@ -123,7 +130,7 @@ export const isValidPercentage = (percentage) => {
 }
 
 /**
- * check phone number
+ * check username format
  */
 export const isUsername = (username) => {
 
@@ -155,5 +162,19 @@ export const isMoreThenZero = (numberString) => {
         return true;
     } else {
         return false;
+    }
+}
+
+/**
+ * validate the date
+ */
+export const isDate = (InputDate) => {
+
+    let moment = require('moment');
+
+    if(!moment(InputDate, 'YYYY-MM-DD').isValid()) {
+        return false;
+    } else {
+        return true;
     }
 }

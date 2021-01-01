@@ -35,7 +35,7 @@ class SideMenuData extends React.Component {
             <aside className="admin-sidebar">
                 <div className="admin-sidebar-brand">
                     {/* <!-- begin sidebar branding--> */}
-                    <img className="admin-brand-logo" src="/assets/logos/logo.png" width="80" alt={SiteSettings.appName} />
+                    <img className="admin-brand-logo" src="/assets/logos/logo.jpeg" width="80" alt={SiteSettings.appName} />
                     <span className="admin-brand-content font-secondary"><a href="/dashboard">{SiteSettings.appName}</a></span>
                     {/* <!-- end sidebar branding--> */}
                     <div className="ml-auto">
@@ -61,41 +61,41 @@ class SideMenuData extends React.Component {
 
                         {currentUser.role == 'Admin' &&
                             <>
-                                <li className={activePath == '/sub-admins' ? 'menu-item active opened' : 'menu-item'}>
+                                <li className={activePath == '/users' ? 'menu-item active opened' : 'menu-item'}>
                                     <a href="#" className="open-dropdown menu-link">
                                         <span className="menu-label">
-                                            <span className="menu-name">Sub Admins
+                                            <span className="menu-name">Users
                                             <span className="menu-arrow"></span>
                                             </span>
                                         </span>
                                         <span className="menu-icon">
-                                            <i className="icon-placeholder mdi mdi-account-key"></i>
+                                            <i className="icon-placeholder mdi mdi-account"></i>
                                         </span>
                                     </a>
 
-                                    <ul className="sub-menu" style={activePath == '/sub-admins' ? { display: 'block' } : { display: 'none' }}>
+                                    <ul className="sub-menu" style={activePath == '/users' ? { display: 'block' } : { display: 'none' }}>
                                         <li className="menu-item">
-                                            <a href="/sub-admins" className=" menu-link">
+                                            <a href="/users" className=" menu-link">
                                                 <span className="menu-label">
                                                     <span className="menu-name">List</span>
                                                 </span>
                                                 <span className="menu-icon">
-                                                    <i className="icon-placeholder mdi mdi-account-details"></i>
+                                                    <i className="icon-placeholder mdi mdi-format-list-bulleted"></i>
                                                 </span>
                                             </a>
                                         </li>
                                         <li className="menu-item">
-                                            <a href="/sub-admins-add" className=" menu-link">
+                                            <a href="/users-add" className=" menu-link">
                                                 <span className="menu-label">
                                                     <span className="menu-name">Add</span>
                                                 </span>
                                                 <span className="menu-icon">
-                                                    <i className="icon-placeholder mdi mdi-account-plus "></i>
+                                                    <i className="icon-placeholder mdi mdi-format-annotation-plus"></i>
                                                 </span>
                                             </a>
                                         </li>
                                         <li className="menu-item">
-                                            <a href="/sub-admins-archive" className=" menu-link">
+                                            <a href="/users-archive" className=" menu-link">
                                                 <span className="menu-label">
                                                     <span className="menu-name">Archived</span>
                                                 </span>
@@ -107,67 +107,41 @@ class SideMenuData extends React.Component {
                                     </ul>
                                 </li>
 
-                                <li className={activePath == '/sports-listing' ? 'menu-item active opened' : 'menu-item'}>
-                                    <a href="/sports-listing" className=" menu-link">
-                                        <span className="menu-label">
-                                            <span className="menu-name">Sports</span>
-                                        </span>
-                                        <span className="menu-icon">
-                                            <i className="icon-placeholder mdi mdi-trophy"></i>
-                                        </span>
-                                    </a>
-                                </li>
-
-                                <li className={activePath == '/series-listing' ? 'menu-item active opened' : 'menu-item'}>
-                                    <a href="/series-listing" className=" menu-link">
-                                        <span className="menu-label">
-                                            <span className="menu-name">Series</span>
-                                        </span>
-                                        <span className="menu-icon">
-                                            <i className="icon-placeholder mdi mdi-view-list"></i>
-                                        </span>
-                                    </a>
-                                </li>
-                            </>
-                        }
-
-                        {currentUser.role == 'Sub-Admin' &&
-                            <>
-                                <li className={activePath == '/masters' ? 'menu-item active opened' : 'menu-item'}>
+                                <li className={activePath == '/plans' ? 'menu-item active opened' : 'menu-item'}>
                                     <a href="#" className="open-dropdown menu-link">
                                         <span className="menu-label">
-                                            <span className="menu-name">Masters
-                                        <span className="menu-arrow"></span>
+                                            <span className="menu-name">Plans
+                                            <span className="menu-arrow"></span>
                                             </span>
                                         </span>
                                         <span className="menu-icon">
-                                            <i className="icon-placeholder mdi mdi-bow-tie"></i>
+                                            <i className="icon-placeholder mdi mdi-credit-card"></i>
                                         </span>
                                     </a>
 
-                                    <ul className="sub-menu" style={activePath == '/masters' ? { display: 'block' } : { display: 'none' }}>
+                                    <ul className="sub-menu" style={activePath == '/plans' ? { display: 'block' } : { display: 'none' }}>
                                         <li className="menu-item">
-                                            <a href="/masters" className=" menu-link">
+                                            <a href="/plans" className=" menu-link">
                                                 <span className="menu-label">
                                                     <span className="menu-name">List</span>
                                                 </span>
                                                 <span className="menu-icon">
-                                                    <i className="icon-placeholder mdi mdi-account-details"></i>
+                                                    <i className="icon-placeholder mdi mdi-format-list-bulleted"></i>
                                                 </span>
                                             </a>
                                         </li>
                                         <li className="menu-item">
-                                            <a href="/masters-add" className=" menu-link">
+                                            <a href="/plans-add" className=" menu-link">
                                                 <span className="menu-label">
                                                     <span className="menu-name">Add</span>
                                                 </span>
                                                 <span className="menu-icon">
-                                                    <i className="icon-placeholder mdi mdi-account-plus "></i>
+                                                    <i className="icon-placeholder mdi mdi-format-annotation-plus"></i>
                                                 </span>
                                             </a>
                                         </li>
                                         <li className="menu-item">
-                                            <a href="/masters-archive" className=" menu-link">
+                                            <a href="/plans-archive" className=" menu-link">
                                                 <span className="menu-label">
                                                     <span className="menu-name">Archived</span>
                                                 </span>
@@ -178,46 +152,42 @@ class SideMenuData extends React.Component {
                                         </li>
                                     </ul>
                                 </li>
-                            </>
-                        }
 
-                        {currentUser.role == 'Master' &&
-                            <>
-                                <li className={activePath == '/players' ? 'menu-item active opened' : 'menu-item'}>
+                                <li className={activePath == '/pages' ? 'menu-item active opened' : 'menu-item'}>
                                     <a href="#" className="open-dropdown menu-link">
                                         <span className="menu-label">
-                                            <span className="menu-name">Players
-                                        <span className="menu-arrow"></span>
+                                            <span className="menu-name">Pages
+                                            <span className="menu-arrow"></span>
                                             </span>
                                         </span>
                                         <span className="menu-icon">
-                                            <i className="icon-placeholder mdi mdi-cards-spade"></i>
+                                            <i className="icon-placeholder mdi mdi-file"></i>
                                         </span>
                                     </a>
 
-                                    <ul className="sub-menu" style={activePath == '/players' ? { display: 'block' } : { display: 'none' }}>
+                                    <ul className="sub-menu" style={activePath == '/pages' ? { display: 'block' } : { display: 'none' }}>
                                         <li className="menu-item">
-                                            <a href="/players" className=" menu-link">
+                                            <a href="/pages" className=" menu-link">
                                                 <span className="menu-label">
                                                     <span className="menu-name">List</span>
                                                 </span>
                                                 <span className="menu-icon">
-                                                    <i className="icon-placeholder mdi mdi-account-details"></i>
+                                                    <i className="icon-placeholder mdi mdi-format-list-bulleted"></i>
                                                 </span>
                                             </a>
                                         </li>
                                         <li className="menu-item">
-                                            <a href="/players-add" className=" menu-link">
+                                            <a href="/pages-add" className=" menu-link">
                                                 <span className="menu-label">
                                                     <span className="menu-name">Add</span>
                                                 </span>
                                                 <span className="menu-icon">
-                                                    <i className="icon-placeholder mdi mdi-account-plus "></i>
+                                                    <i className="icon-placeholder mdi mdi-format-annotation-plus"></i>
                                                 </span>
                                             </a>
                                         </li>
                                         <li className="menu-item">
-                                            <a href="/players-archive" className=" menu-link">
+                                            <a href="/pages-archive" className=" menu-link">
                                                 <span className="menu-label">
                                                     <span className="menu-name">Archived</span>
                                                 </span>
@@ -228,21 +198,18 @@ class SideMenuData extends React.Component {
                                         </li>
                                     </ul>
                                 </li>
-                            </>
-                        }
 
-                        {(currentUser.role == 'Master' || currentUser.role == 'Player') &&
-                            <>
-                                <li className={activePath == '/credits-history' ? 'menu-item active opened' : 'menu-item'}>
-                                    <a href="/credits-history" className=" menu-link">
+                                <li className={activePath == '/contact-us' ? 'menu-item active opened' : 'menu-item'}>
+                                    <a href="/contact-us" className=" menu-link">
                                         <span className="menu-label">
-                                            <span className="menu-name">Credits History</span>
+                                            <span className="menu-name">Contact US</span>
                                         </span>
                                         <span className="menu-icon">
-                                            <i className="icon-placeholder mdi mdi-coins "></i>
+                                            <i className="icon-placeholder mdi mdi-email"></i>
                                         </span>
                                     </a>
                                 </li>
+                                
                             </>
                         }
 

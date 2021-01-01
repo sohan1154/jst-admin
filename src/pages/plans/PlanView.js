@@ -6,7 +6,7 @@ import * as ApisService from "../../providers/apis/apis";
 import { Roller } from "react-awesome-spinners";
 import SideMenuData from '../../components/elements/SideMenuData';
 
-class SubAdminView extends React.Component {
+class PlanView extends React.Component {
 
     constructor(props) {
         super(props);
@@ -23,17 +23,17 @@ class SubAdminView extends React.Component {
 
         let id = this.props.match.params.id;
 
-        this.getAccountDetail(id);
+        this.getDetail(id);
     }
 
-    getAccountDetail = (id) => {
+    getDetail = (id) => {
 
         this.setState({
             loading: true,
             errors: {},
         });
 
-        ApisService.getSubAdminAccountDetail(id)
+        ApisService.getPlanDetail(id)
             .then(response => {
 
                 if (response.status) {
@@ -68,7 +68,7 @@ class SubAdminView extends React.Component {
                             <div className="container">
                                 <div className="row p-b-60 p-t-60">
                                     <div className="col-lg-8 mx-auto text-white p-b-30">
-                                        <h3>Sub Admin Form </h3>
+                                        <h3>Plan Form </h3>
                                     </div>
                                 </div>
                             </div>
@@ -88,23 +88,31 @@ class SubAdminView extends React.Component {
                                                             <input type="text" value={detail.name} className="form-control" readOnly />
                                                         </div>
                                                         <div className="form-group col-md-6">
-                                                            <label>Email</label>
-                                                            <input type="email" value={detail.email} className="form-control" readOnly />
+                                                            <label>Amount (INR)</label>
+                                                            <input type="amount" value={detail.amount} className="form-control" readOnly />
                                                         </div>
                                                     </div>
                                                     <div className="form-row">
                                                         <div className="form-group col-md-6">
-                                                            <label>Username</label>
-                                                            <input type="text" value={detail.username} className="form-control" readOnly />
+                                                            <label>Validity (Days)</label>
+                                                            <input type="text" value={detail.validity} className="form-control" readOnly />
                                                         </div>
                                                         <div className="form-group col-md-6">
-                                                            <label>Mobile</label>
-                                                            <input type="text" value={detail.mobile} className="form-control" readOnly />
+                                                            <label>Allowed Members</label>
+                                                            <input type="text" value={detail.allowed_members} className="form-control" readOnly />
                                                         </div>
                                                     </div>
-                                                    <div className="form-group">
-                                                        <label>Address</label>
-                                                        <input type="text" value={detail.address} className="form-control" readOnly />
+                                                    <div className="form-row">
+                                                        <div className="form-group col-md-12">
+                                                            <label>Description</label>
+                                                            <textarea value={detail.description} className="form-control" rows='15' readOnly></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div className="form-row">
+                                                        <div className="form-group col-md-6">
+                                                            <label>Status</label>
+                                                            <input type="text" value={detail.status_for_display} className="form-control" readOnly />
+                                                        </div>
                                                     </div>
                                                     <div className="form-row">
                                                         <div className="form-group col-md-6">
@@ -117,9 +125,9 @@ class SubAdminView extends React.Component {
                                                         </div>
                                                     </div>
                                                     
-                                                    <a href={"/sub-admins-edit/"+detail.id} className="btn btn-success btn-cta">Edit</a>
+                                                    <a href={"/plans-edit/"+detail.id} className="btn btn-success btn-cta">Edit</a>
                                                     &nbsp;&nbsp;
-                                                    <a href={"/sub-admins"} className="btn btn-dark btn-cta">Back</a>
+                                                    <a href={"/plans"} className="btn btn-dark btn-cta">Back</a>
 
                                                 </form>
                                             </div>
@@ -140,4 +148,4 @@ class SubAdminView extends React.Component {
     }
 }
 
-export default SubAdminView;
+export default PlanView;

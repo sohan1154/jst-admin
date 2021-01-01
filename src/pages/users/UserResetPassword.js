@@ -7,7 +7,7 @@ import { Roller } from "react-awesome-spinners";
 import SideMenuData from '../../components/elements/SideMenuData';
 import * as CustomValidators from '../../providers/shared/validator';
 
-class PlayerResetPassword extends React.Component {
+class UserResetPassword extends React.Component {
 
     constructor(props) {
         super(props);
@@ -42,7 +42,7 @@ class PlayerResetPassword extends React.Component {
         });
     }
 
-    validateLoginForm = (e) => {
+    validateForm = (e) => {
 
         let errors = {};
         const { formData } = this.state;
@@ -84,12 +84,12 @@ class PlayerResetPassword extends React.Component {
             errors: {},
         });
 
-        let errors = this.validateLoginForm();
+        let errors = this.validateForm();
         console.log('errors::::::', errors)
 
         if (!errors) {
 
-            ApisService.changePlayerPassword(formData)
+            ApisService.changeUserPassword(formData)
                 .then(response => {
 
                     if (response.status) {
@@ -98,7 +98,7 @@ class PlayerResetPassword extends React.Component {
                             loading: false,
                         });
                         GlobalProvider.successMessage(response.message);
-                        this.props.history.push('/players');
+                        this.props.history.push('/sub-admins');
                     } else {
                         this.setState({
                             formSubmitted: false,
@@ -141,7 +141,7 @@ class PlayerResetPassword extends React.Component {
                             <div className="container">
                                 <div className="row p-b-60 p-t-60">
                                     <div className="col-lg-8 mx-auto text-white p-b-30">
-                                        <h3>Player Form </h3>
+                                        <h3>Sub Admin Form </h3>
                                     </div>
                                 </div>
                             </div>
@@ -170,7 +170,7 @@ class PlayerResetPassword extends React.Component {
 
                                                     <button type="submit" className="btn btn-primary btn-cta" disabled={loading}>{loading ? 'Waiting...' : 'Submit'}</button>
                                                     &nbsp;&nbsp;
-                                                    <a href={"/players"} className="btn btn-dark btn-cta">Cancel</a>
+                                                    <a href={"/sub-admins"} className="btn btn-dark btn-cta">Cancel</a>
 
                                                 </form>
 
@@ -192,4 +192,4 @@ class PlayerResetPassword extends React.Component {
     }
 }
 
-export default PlayerResetPassword;
+export default UserResetPassword;

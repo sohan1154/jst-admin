@@ -39,7 +39,7 @@ class Login extends Component {
     });
   }
 
-  validateLoginForm = (e) => {
+  validateForm = (e) => {
 
     let errors = {};
     const { formData } = this.state;
@@ -81,7 +81,7 @@ class Login extends Component {
 
     console.log('formData::::', formData)
 
-    let errors = this.validateLoginForm();
+    let errors = this.validateForm();
 
     if (!errors) {
 
@@ -136,7 +136,7 @@ class Login extends Component {
                   <div className=" padding-box-2 ">
                     <div className="p-b-20 text-center">
                       <p>
-                        <img src="assets/logos/logo.png" width="200" alt="" />
+                        <img src="assets/logos/logo.jpeg" width="200" alt="" />
                       </p>
                     </div>
 

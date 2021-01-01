@@ -11,37 +11,31 @@ import Home from '../pages/home/Home';
 import EditProfile from '../pages/settings/EditProfile';
 import ChangePassword from '../pages/settings/ChangePassword';
 
-// sub-admins 
-import SubAdmins from '../pages/subadmins/SubAdmins';
-import SubAdminAdd from '../pages/subadmins/SubAdminAdd';
-import SubAdminView from '../pages/subadmins/SubAdminView';
-import SubAdminEdit from '../pages/subadmins/SubAdminEdit';
-import SubAdminResetPassword from '../pages/subadmins/SubAdminResetPassword';
-import SubAdminsArchive from '../pages/subadmins/SubAdminsArchive';
+// users 
+import Users from '../pages/users/Users';
+import UserAdd from '../pages/users/UserAdd';
+import UserView from '../pages/users/UserView';
+import UserEdit from '../pages/users/UserEdit';
+import UserResetPassword from '../pages/users/UserResetPassword';
+import UsersArchive from '../pages/users/UsersArchive';
 
-// masters 
-import Masters from '../pages/masters/Masters';
-import MasterAdd from '../pages/masters/MasterAdd';
-import MasterView from '../pages/masters/MasterView';
-import MasterEdit from '../pages/masters/MasterEdit';
-import MasterResetPassword from '../pages/masters/MasterResetPassword';
-import MastersArchive from '../pages/masters/MastersArchive';
+// static-pages 
+import Pages from '../pages/static-pages/Pages';
+import PageAdd from '../pages/static-pages/PageAdd';
+import PageView from '../pages/static-pages/PageView';
+import PageEdit from '../pages/static-pages/PageEdit';
+import PagesArchive from '../pages/static-pages/PagesArchive';
 
-// players 
-import Players from '../pages/players/Players';
-import PlayerAdd from '../pages/players/PlayerAdd';
-import PlayerView from '../pages/players/PlayerView';
-import PlayerEdit from '../pages/players/PlayerEdit';
-import PlayerResetPassword from '../pages/players/PlayerResetPassword';
-import PlayersArchive from '../pages/players/PlayersArchive';
+// contact-us
+import ContactUs from '../pages/contact-us/ContactUs';
+import ContactUsView from '../pages/contact-us/ContactUsView';
 
-// others
-import ThirdPartyApis from '../pages/testing/ThirdPartyApis';
-import CreditsHistory from '../pages/credits/CreditsHistory';
-import Sports from '../pages/sports/Sports';
-import Series from '../pages/series/Series';
-import SubAdminWiseMasters from '../pages/sub_admin_wise_masters/SubAdminWiseMasters';
-import MasterWisePlayers from '../pages/master_wise_players/MasterWisePlayers';
+// plans 
+import Plans from '../pages/plans/Plans';
+import PlanAdd from '../pages/plans/PlanAdd';
+import PlanView from '../pages/plans/PlanView';
+import PlanEdit from '../pages/plans/PlanEdit';
+import PlansArchive from '../pages/plans/PlansArchive';
 
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
@@ -63,37 +57,31 @@ class RoutesList extends React.Component {
           <PrivateRoute path="/edit-profile" component={EditProfile} />
           <PrivateRoute path="/change-password" component={ChangePassword} />
 
-          {/* sub-admins */}
-          <PrivateRoute path="/sub-admins" component={SubAdmins} />
-          <PrivateRoute path="/sub-admins-view/:id" component={SubAdminView} />
-          <PrivateRoute path="/sub-admins-add" component={SubAdminAdd} />
-          <PrivateRoute path="/sub-admins-edit/:id" component={SubAdminEdit} />
-          <PrivateRoute path="/sub-admins-reset-password/:id" component={SubAdminResetPassword} />
-          <PrivateRoute path="/sub-admins-archive" component={SubAdminsArchive} />
+          {/* users */}
+          <PrivateRoute path="/users" component={Users} />
+          <PrivateRoute path="/users-view/:id" component={UserView} />
+          <PrivateRoute path="/users-add" component={UserAdd} />
+          <PrivateRoute path="/users-edit/:id" component={UserEdit} />
+          <PrivateRoute path="/users-reset-password/:id" component={UserResetPassword} />
+          <PrivateRoute path="/users-archive" component={UsersArchive} />
           
-          {/* masters */}
-          <PrivateRoute path="/masters" component={Masters} />
-          <PrivateRoute path="/masters-view/:id" component={MasterView} />
-          <PrivateRoute path="/masters-add" component={MasterAdd} />
-          <PrivateRoute path="/masters-edit/:id" component={MasterEdit} />
-          <PrivateRoute path="/masters-reset-password/:id" component={MasterResetPassword} />
-          <PrivateRoute path="/masters-archive" component={MastersArchive} />
-                    
-          {/* players */}
-          <PrivateRoute path="/players" component={Players} />
-          <PrivateRoute path="/players-view/:id" component={PlayerView} />
-          <PrivateRoute path="/players-add" component={PlayerAdd} />
-          <PrivateRoute path="/players-edit/:id" component={PlayerEdit} />
-          <PrivateRoute path="/players-reset-password/:id" component={PlayerResetPassword} />
-          <PrivateRoute path="/players-archive" component={PlayersArchive} />
-
-          {/* others */}
-          <PrivateRoute path="/call-third-party-apis" component={ThirdPartyApis} />
-          <PrivateRoute path="/credits-history" component={CreditsHistory} />
-          <PrivateRoute path="/sports-listing" component={Sports} />
-          <PrivateRoute path="/series-listing" component={Series} />
-          <PrivateRoute path="/sub-admin-wise-masters/:parent_id" component={SubAdminWiseMasters} />
-          <PrivateRoute path="/master-wise-players/:parent_id" component={MasterWisePlayers} />
+          {/* plans */}
+          <PrivateRoute path="/plans" component={Plans} />
+          <PrivateRoute path="/plans-view/:id" component={PlanView} />
+          <PrivateRoute path="/plans-add" component={PlanAdd} />
+          <PrivateRoute path="/plans-edit/:id" component={PlanEdit} />
+          <PrivateRoute path="/plans-archive" component={PlansArchive} />
+          
+          {/* pages */}
+          <PrivateRoute path="/pages" component={Pages} />
+          <PrivateRoute path="/pages-view/:id" component={PageView} />
+          <PrivateRoute path="/pages-add" component={PageAdd} />
+          <PrivateRoute path="/pages-edit/:id" component={PageEdit} />
+          <PrivateRoute path="/pages-archive" component={PagesArchive} />
+          
+          {/* contact-us */}
+          <PrivateRoute path="/contact-us" component={ContactUs} />
+          <PrivateRoute path="/contact-us-view/:id" component={ContactUsView} />
           
         </Switch>
       </BrowserRouter>

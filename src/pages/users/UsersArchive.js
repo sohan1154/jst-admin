@@ -1,50 +1,44 @@
 import React from 'react';
 import * as GlobalProvider from '../../providers/globals/globals';
 import Header from '../../components/elements/Header';
+import Pagenation from '../../components/elements/Pagenation';
 import RecordNotFound from '../../components/elements/RecordNotFound';
 import * as ApisService from "../../providers/apis/apis";
 import { Roller } from "react-awesome-spinners";
 import SideMenuData from '../../components/elements/SideMenuData';
 
-class MasterWisePlayers extends React.Component {
+class UsersArchive extends React.Component {
 
     constructor(props) {
         super(props);
 
-        let currentUser = GlobalProvider.getUser();
-
         this.state = {
             entries: [],
-            master: {},
             errors: {},
             loading: false,
             currentUser: GlobalProvider.getUser(),
-            open: false,
         }
     }
 
     componentDidMount() {
 
-        let parent_id = this.props.match.params.parent_id;
-
-        this.getUsers(parent_id);
+        this.getData('User');
     }
 
-    getUsers = (parent_id) => {
+    getData = (role) => {
 
         this.setState({
             loading: true,
             errors: {},
         });
 
-        ApisService.getListMasterWisePlayers(parent_id)
+        ApisService.getArchiveUsers(role)
             .then(response => {
 
                 if (response.status) {
                     this.setState({
                         loading: false,
                         entries: response.data,
-                        master: response.master,
                     });
                 } else {
                     this.setState({
@@ -63,9 +57,46 @@ class MasterWisePlayers extends React.Component {
             });
     }
 
+    restoreAccount = (id, index) => {
+
+        let _this = this;
+
+        GlobalProvider.confirmBox("Are you Sure? You want to restore this account.", (isTrue) => {
+            if (isTrue) {
+                ApisService.restoreUserAccount(id)
+                    .then(response => {
+
+                        if (response.status) {
+
+                            // remove item from array 
+                            const { entries } = _this.state;
+
+                            let entriesNew = entries.filter((item) => {
+                                if (item.id != id) {
+                                    return item;
+                                }
+                            });
+
+                            _this.setState({
+                                entries: entriesNew,
+                            });
+
+                            GlobalProvider.successMessage(response.message);
+
+                        } else {
+                            GlobalProvider.errorMessage(response.message);
+                        }
+
+                    }).catch(error => {
+                        GlobalProvider.errorMessage(error.message);
+                    });
+            }
+        })
+    }
+
     render() {
 
-        const { entries, master, loading, open, errors, currentUser } = this.state;
+        const { entries, loading } = this.state;
         let count = 1;
 
         return (
@@ -81,20 +112,7 @@ class MasterWisePlayers extends React.Component {
                             <div className="container  m-b-30">
                                 <div className="row">
                                     <div className="col-12 text-white p-t-40 p-b-90">
-
-                                        {currentUser.role == 'Admin' &&
-                                            <h4 className="">
-                                                <a href={"/sub-admins"} className="in-active"> Sub Admins </a> &raquo;
-                                                <a href={"/sub-admin-wise-masters/" + master.parent_id} className="in-active"> Masters </a> &raquo;
-                                                Players of ({master.name})
-                                            </h4>
-                                        }
-                                        {currentUser.role == 'Sub-Admin' &&
-                                            <h4 className="">
-                                                <a href={"/masters"} className="in-active"> Masters </a> &raquo;
-                                                Players of ({master.name})
-                                            </h4>
-                                        }
+                                        <h4 className="">Archived Users</h4>
                                     </div>
                                 </div>
                             </div>
@@ -117,11 +135,11 @@ class MasterWisePlayers extends React.Component {
                                                         <thead>
                                                             <tr>
                                                                 <th>Name</th>
-                                                                <th>Username</th>
+                                                                <th>Email</th>
                                                                 <th>Mobile</th>
-                                                                <th>Address</th>
-                                                                <th>Avl. Credit</th>
-                                                                <th>Status</th>
+                                                                <th>Gender</th>
+                                                                <th>Deleted At</th>
+                                                                <th>Actions</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -129,18 +147,12 @@ class MasterWisePlayers extends React.Component {
                                                             {entries.map((item, index) =>
                                                                 <tr key={item.id} id={'RecordID_' + item.id}>
                                                                     <td>{item.name}</td>
-                                                                    <td>{item.username}</td>
+                                                                    <td>{item.email}</td>
                                                                     <td>{item.mobile}</td>
-                                                                    <td>{item.address}</td>
-                                                                    <td className="right">{item.credit}</td>
+                                                                    <td>{item.gender}</td>
+                                                                    <td>{item.deleted_at}</td>
                                                                     <td>
-                                                                        <span className="changeStatus">
-                                                                            {item.status ? (
-                                                                                <button type="button" className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-success" title="Disable"><i className="mdi mdi-check"></i></button>
-                                                                            ) : (
-                                                                                    <button type="button" className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-warning" title="Enable"><i className="mdi mdi-close"></i></button>
-                                                                                )}
-                                                                        </span>
+                                                                        <button className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-success" title="Restore" onClick={() => this.restoreAccount(item.id, index)}><i className="mdi mdi-restore"></i></button>
                                                                     </td>
                                                                 </tr>
                                                             )}
@@ -158,10 +170,11 @@ class MasterWisePlayers extends React.Component {
                     </section>
 
                 </main>
+
             </>
         );
 
     }
 }
 
-export default MasterWisePlayers;
+export default UsersArchive;

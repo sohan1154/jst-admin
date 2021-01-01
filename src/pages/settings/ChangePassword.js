@@ -42,7 +42,7 @@ class ChangePassword extends React.Component {
         });
     }
 
-    validateLoginForm = (e) => {
+    validateForm = (e) => {
 
         let errors = {};
         const { formData } = this.state;
@@ -88,7 +88,7 @@ class ChangePassword extends React.Component {
             errors: {},
         });
 
-        let errors = this.validateLoginForm();
+        let errors = this.validateForm();
         console.log('errors::::::', errors)
 
         if (!errors) {
@@ -102,6 +102,7 @@ class ChangePassword extends React.Component {
                             loading: false,
                         });
                         GlobalProvider.successMessage(response.message);
+                        this.props.history.push('/dashboard');
                     } else {
                         this.setState({
                             formSubmitted: false,
@@ -178,7 +179,7 @@ class ChangePassword extends React.Component {
 
                                                     <button type="submit" className="btn btn-primary btn-cta" disabled={loading}>{loading ? 'Waiting...' : 'Submit'}</button>
                                                     &nbsp;&nbsp;
-                                                    <a href={"/sub-admins"} className="btn btn-dark btn-cta">Cancel</a>
+                                                    <a href={"/dashboard"} className="btn btn-dark btn-cta">Cancel</a>
 
                                                 </form>
 

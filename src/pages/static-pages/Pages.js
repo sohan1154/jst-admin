@@ -7,7 +7,7 @@ import * as ApisService from "../../providers/apis/apis";
 import { Roller } from "react-awesome-spinners";
 import SideMenuData from '../../components/elements/SideMenuData';
 
-class SubAdmins extends React.Component {
+class Pages extends React.Component {
 
     constructor(props) {
         super(props);
@@ -22,17 +22,17 @@ class SubAdmins extends React.Component {
 
     componentDidMount() {
 
-        this.getUsers('Sub-Admin');
+        this.getData();
     }
 
-    getUsers = (role) => {
+    getData = (role) => {
 
         this.setState({
             loading: true,
             errors: {},
         });
 
-        ApisService.getSubAdminUsers(role)
+        ApisService.getPages(role)
             .then(response => {
 
                 if (response.status) {
@@ -63,9 +63,9 @@ class SubAdmins extends React.Component {
 
         // document.body.classList.add('display-loader');
 
-        GlobalProvider.confirmBox("Are you Sure? You want to change status of this account.", (isTrue) => {
+        GlobalProvider.confirmBox("Are you Sure? You want to change status of this page.", (isTrue) => {
             if (isTrue) {
-                ApisService.changeSubAdminAccountStatus(id, status)
+                ApisService.changePageStatus(id, status)
                     .then(response => {
 
                         if (response.status) {
@@ -98,13 +98,13 @@ class SubAdmins extends React.Component {
         });
     }
 
-    deleteAccount = (id, index) => {
+    deletePage = (id, index) => {
 
         let _this = this;
 
-        GlobalProvider.confirmBox("Are you Sure? You want to delete this account.", (isTrue) => {
+        GlobalProvider.confirmBox("Are you Sure? You want to delete this page.", (isTrue) => {
             if (isTrue) {
-                ApisService.deleteSubAdminAccount(id)
+                ApisService.deletePage(id)
                     .then(response => {
 
                         if (response.status) {
@@ -153,7 +153,7 @@ class SubAdmins extends React.Component {
                             <div className="container  m-b-30">
                                 <div className="row">
                                     <div className="col-12 text-white p-t-40 p-b-90">
-                                        <h4 className="">Sub Admins</h4>
+                                        <h4 className="">Pages</h4>
                                     </div>
                                 </div>
                             </div>
@@ -175,10 +175,9 @@ class SubAdmins extends React.Component {
                                                     <table id="example-height" className="table   " style={{ width: "100%" }}>
                                                         <thead>
                                                             <tr>
-                                                                <th>Name</th>
-                                                                <th>Username</th>
-                                                                <th>Mobile</th>
-                                                                <th>Address</th>
+                                                                <th>Title</th>
+                                                                <th>Category</th>
+                                                                <th>Page Key</th>
                                                                 <th>Status</th>
                                                                 <th>Actions</th>
                                                             </tr>
@@ -187,10 +186,9 @@ class SubAdmins extends React.Component {
 
                                                             {entries.map((item, index) =>
                                                                 <tr key={item.id} id={'RecordID_' + item.id}>
-                                                                    <td>{item.name}</td>
-                                                                    <td>{item.username}</td>
-                                                                    <td>{item.mobile}</td>
-                                                                    <td>{item.address}</td>
+                                                                    <td>{item.title}</td>
+                                                                    <td>{item.category}</td>
+                                                                    <td>{item.page_key}</td>
                                                                     <td className="text-align-center">
                                                                         <span className="changeStatus" onClick={() => this.changeStatus(item.id, !item.status)}>
                                                                             {item.status ? (
@@ -201,11 +199,9 @@ class SubAdmins extends React.Component {
                                                                         </span>
                                                                     </td>
                                                                     <td>
-                                                                        <a href={"/sub-admin-wise-masters/" + item.id} className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-secondary" title="Masters"><i className="mdi mdi-account-details"></i></a>
-                                                                        <a href={"/sub-admins-reset-password/" + item.id} className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-dark" title="Reset Password"><i className="mdi mdi-key"></i></a>
-                                                                        <a href={"/sub-admins-view/" + item.id} className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-info" title="Detail"><i className="mdi mdi-eye"></i></a>
-                                                                        <a href={"/sub-admins-edit/" + item.id} className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-warning" title="Edit"><i className="mdi mdi-square-edit-outline"></i></a>
-                                                                        <button className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-danger" title="Delete" onClick={() => this.deleteAccount(item.id, index)}><i className="mdi mdi-delete"></i></button>
+                                                                        <a href={"/pages-view/" + item.id} className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-info" title="Detail"><i className="mdi mdi-eye"></i></a>
+                                                                        <a href={"/pages-edit/" + item.id} className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-warning" title="Edit"><i className="mdi mdi-square-edit-outline"></i></a>
+                                                                        <button className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-danger" title="Delete" onClick={() => this.deletePage(item.id, index)}><i className="mdi mdi-delete"></i></button>
                                                                     </td>
                                                                 </tr>
                                                             )}
@@ -230,4 +226,4 @@ class SubAdmins extends React.Component {
     }
 }
 
-export default SubAdmins;
+export default Pages;

@@ -6,34 +6,50 @@ import * as ApisService from "../../providers/apis/apis";
 import { Roller } from "react-awesome-spinners";
 import SideMenuData from '../../components/elements/SideMenuData';
 import * as CustomValidators from '../../providers/shared/validator';
+var moment = require('moment');
 
-class PlayerAdd extends React.Component {
+class PlanEdit extends React.Component {
 
     constructor(props) {
         super(props);
 
-        let currentUser = GlobalProvider.getUser();
-
         this.state = {
-            formData: {
-                parent_id: currentUser.id,
-                role: 'Player',
-                email: '',
-                address: '',
-                mobile: '',
-                credit: 0,
-                is_betting_locked: 0,
-                status: 1,
-            }, // Contains form data
+            formData: {}, // Contains form data
             errors: {}, // Contains field errors
             formSubmitted: false, // Indicates submit status of form
             loading: false, // Indicates in progress state of form
-            currentUser: currentUser,
+            currentUser: GlobalProvider.getUser(),
         }
     }
 
     componentDidMount() {
+        let id = this.props.match.params.id;
 
+        this.getDetail(id);
+    }
+
+    getDetail = (id) => {
+
+        this.setState({
+            loading: true,
+            errors: {},
+        });
+
+        ApisService.getPlanDetail(id)
+            .then(response => {
+
+                if (response.status) {
+                    this.setState({
+                        loading: false,
+                        formData: response.data,
+                    });
+                } else {
+                    GlobalProvider.errorMessage(response.message);
+                }
+
+            }).catch(error => {
+                GlobalProvider.errorMessage(error);
+            });
     }
 
     handleChange = (event) => {
@@ -49,7 +65,7 @@ class PlayerAdd extends React.Component {
         });
     }
 
-    validateLoginForm = (e) => {
+    validateForm = (e) => {
 
         let errors = {};
         const { formData } = this.state;
@@ -58,36 +74,22 @@ class PlayerAdd extends React.Component {
             errors.name = "Name can't be blank";
         }
 
-        if (CustomValidators.isEmpty(formData.username)) {
-            errors.username = "Username can't be blank";
+        if (CustomValidators.isEmpty(formData.amount)) {
+            errors.amount = "Amount can't be blank";
         }
-        else if (!CustomValidators.isUsername(formData.username)) {
-            errors.username = "Username can contain only alphanumeric and _-.";
-        }
-        else if (!CustomValidators.isLength(formData.username, { gte: 4, lte: 8, trim: true })) {
-            errors.username = "Username's length must between 4 to 8";
+        else if (!CustomValidators.numberOnly(formData.amount)) {
+            errors.amount = "Please inter valid amount.";
         }
 
-        if (CustomValidators.isEmpty(formData.password)) {
-            errors.password = "Password can't be blank";
+        if (CustomValidators.isEmpty(formData.allowed_members)) {
+            errors.allowed_members = "Allowed Members can't be blank";
         }
-        else if (CustomValidators.isContainWhiteSpace(formData.password)) {
-            errors.password = "Password should not contain white spaces";
-        }
-        else if (!CustomValidators.isLength(formData.password, { gte: 4, lte: 8, trim: true })) {
-            errors.password = "Password's length must between 4 to 8";
+        else if (!CustomValidators.numberOnly(formData.allowed_members)) {
+            errors.allowed_members = "Please inter valid Allowed Members.";
         }
 
-        if (!CustomValidators.isEmpty(formData.email) && !CustomValidators.isEmail(formData.email)) {
-            errors.email = "Please enter a valid email";
-        }
-
-        if (!CustomValidators.isEmpty(formData.mobile) && !CustomValidators.isPhoneNumber(formData.mobile)) {
-            errors.mobile = "Please inter valid mobile number.";
-        }
-
-        if (!CustomValidators.isEmpty(formData.credit) && !CustomValidators.numberOnly(formData.credit)) {
-            errors.credit = "Please inter valid number.";
+        if (CustomValidators.isEmpty(formData.description)) {
+            errors.description = "Description can't be blank";
         }
 
         if (CustomValidators.isEmpty(errors)) {
@@ -97,12 +99,11 @@ class PlayerAdd extends React.Component {
         }
     }
 
-    create = (e) => {
+    update = (e) => {
 
         e.preventDefault();
 
         const { formData } = this.state;
-
         console.log('formData::::::', formData)
 
         this.setState({
@@ -111,12 +112,12 @@ class PlayerAdd extends React.Component {
             errors: {},
         });
 
-        let errors = this.validateLoginForm();
+        let errors = this.validateForm();
         console.log('errors::::::', errors)
 
         if (!errors) {
 
-            ApisService.createPlayerAccount(formData)
+            ApisService.updatePlan(formData)
                 .then(response => {
 
                     if (response.status) {
@@ -125,7 +126,7 @@ class PlayerAdd extends React.Component {
                             loading: false,
                         });
                         GlobalProvider.successMessage(response.message);
-                        this.props.history.push('/players');
+                        this.props.history.push('/plans');
                     } else {
                         this.setState({
                             formSubmitted: false,
@@ -168,7 +169,7 @@ class PlayerAdd extends React.Component {
                             <div className="container">
                                 <div className="row p-b-60 p-t-60">
                                     <div className="col-lg-8 mx-auto text-white p-b-30">
-                                        <h3>Player Form </h3>
+                                        <h3>Plan Form </h3>
                                     </div>
                                 </div>
                             </div>
@@ -180,61 +181,49 @@ class PlayerAdd extends React.Component {
                                         <div className="card py-3 m-b-30">
                                             <div className="card-body">
 
-                                                <form className="needs-validation" onSubmit={this.create}>
+                                                <form className="needs-validation" onSubmit={this.update}>
 
-                                                    <h3 className="">Add Information</h3>
+                                                    <h3 className="">Update Information</h3>
 
                                                     <div className="form-row">
                                                         <div className="form-group col-md-6">
                                                             <label for="inputEmail6">Name*</label>
-                                                            <input type="text" className="form-control" name="name" onKeyUp={this.handleChange} />
+                                                            <input type="text" className="form-control" name="name" defaultValue={formData.name} onKeyUp={this.handleChange} />
                                                             {errors.name && <span className="error">{errors.name}</span>}
                                                         </div>
                                                         <div className="form-group col-md-6">
-                                                            <label for="inputEmail4">Email</label>
-                                                            <input type="email" className="form-control" name="email" onKeyUp={this.handleChange} />
-                                                            {errors.email && <span className="error">{errors.email}</span>}
+                                                            <label for="inputEmail4">Amount* (INR only)</label>
+                                                            <input type="text" className="form-control" name="amount" defaultValue={formData.amount} onKeyUp={this.handleChange} />
+                                                            {errors.amount && <span className="error">{errors.amount}</span>}
                                                         </div>
                                                     </div>
                                                     <div className="form-row">
                                                         <div className="form-group col-md-6">
-                                                            <label for="asd">Username*</label>
-                                                            <input type="text" className="form-control" name="username" onKeyUp={this.handleChange} />
-                                                            {errors.username && <span className="error">{errors.username}</span>}
-                                                        </div>
-                                                        <div className="form-group col-md-6">
-                                                            <label for="inputPassword4">Password*</label>
-                                                            <input type="password" className="form-control" name="password" onKeyUp={this.handleChange} />
-                                                            {errors.password && <span className="error">{errors.password}</span>}
-                                                        </div>
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <label for="inputAddress">Address</label>
-                                                        <input type="text" className="form-control" name="address" onKeyUp={this.handleChange} />
-                                                        {errors.address && <span className="error">{errors.address}</span>}
-                                                    </div>
-                                                    <div className="form-row">
-                                                        <div className="form-group col-md-6">
-                                                            <label for="inputPassword4">Credit</label>
-                                                            <input type="number" step="any" className="form-control" name="credit" onKeyUp={this.handleChange} />
-                                                            {errors.credit && <span className="error">{errors.credit}</span>}
-                                                        </div>
-                                                        <div className="form-group col-md-6">
-                                                            <label for="inputPassword4">Mobile</label>
-                                                            <input type="phone" className="form-control" name="mobile" onKeyUp={this.handleChange} />
-                                                            {errors.mobile && <span className="error">{errors.mobile}</span>}
-                                                        </div>
-                                                    </div>
-                                                    <div className="form-row">
-                                                        <div className="form-group col-md-6">
-                                                            <label for="inputEmail4">Betting Status</label>
-                                                            <select className="form-control" name="is_betting_locked" value={formData.is_betting_locked} onChange={this.handleChange}>
-                                                                <option value={0}>Open</option>
-                                                                <option value={1}>Locked</option>
+                                                            <label for="inputGender4">Validity*</label>
+                                                            <select className="form-control" name="validity" value={formData.validity} onChange={this.handleChange}>
+                                                                <option value={30}>1 Month (30 Days)</option>
+                                                                <option value={60}>2 Months (60 Days)</option>
+                                                                <option value={90}>3 Months (90 Days)</option>
+                                                                <option value={180}>6 Months (180 Days)</option>
+                                                                <option value={365}>1 Year (365 Days)</option>
                                                             </select>
                                                         </div>
                                                         <div className="form-group col-md-6">
-                                                            <label for="inputEmail4">Account Status</label>
+                                                            <label for="inputEmail4">Allowed Members*</label>
+                                                            <input type="text" className="form-control" name="allowed_members" defaultValue={formData.allowed_members} onKeyUp={this.handleChange} />
+                                                            {errors.allowed_members && <span className="error">{errors.allowed_members}</span>}
+                                                        </div>
+                                                    </div>
+                                                    <div className="form-row">
+                                                        <div className="form-group col-md-12">
+                                                            <label for="inputEmail4">Description*</label>
+                                                            <textarea className="form-control" name="description" value={formData.description} onChange={this.handleChange} rows='10'></textarea>
+                                                            {errors.description && <span className="error">{errors.description}</span>}
+                                                        </div>
+                                                    </div>
+                                                    <div className="form-row">
+                                                        <div className="form-group col-md-6">
+                                                            <label for="inputEmail4">Status</label>
                                                             <select className="form-control" name="status" value={formData.status} onChange={this.handleChange}>
                                                                 <option value={1}>Active</option>
                                                                 <option value={0}>In-Active</option>
@@ -244,7 +233,7 @@ class PlayerAdd extends React.Component {
 
                                                     <button type="submit" className="btn btn-primary btn-cta" disabled={loading}>{loading ? 'Waiting...' : 'Submit'}</button>
                                                     &nbsp;&nbsp;
-                                                    <a href={"/players"} className="btn btn-dark btn-cta">Cancel</a>
+                                                    <a href={"/plans"} className="btn btn-dark btn-cta">Cancel</a>
 
                                                 </form>
 
@@ -266,4 +255,4 @@ class PlayerAdd extends React.Component {
     }
 }
 
-export default PlayerAdd;
+export default PlanEdit;

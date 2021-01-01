@@ -6,8 +6,9 @@ import * as ApisService from "../../providers/apis/apis";
 import { Roller } from "react-awesome-spinners";
 import SideMenuData from '../../components/elements/SideMenuData';
 import * as CustomValidators from '../../providers/shared/validator';
+var moment = require('moment');
 
-class PlayerEdit extends React.Component {
+class PageEdit extends React.Component {
 
     constructor(props) {
         super(props);
@@ -24,17 +25,17 @@ class PlayerEdit extends React.Component {
     componentDidMount() {
         let id = this.props.match.params.id;
 
-        this.getAccountDetail(id);
+        this.getDetail(id);
     }
 
-    getAccountDetail = (id) => {
+    getDetail = (id) => {
 
         this.setState({
             loading: true,
             errors: {},
         });
 
-        ApisService.getPlayerAccountDetail(id)
+        ApisService.getPageDetail(id)
             .then(response => {
 
                 if (response.status) {
@@ -64,21 +65,21 @@ class PlayerEdit extends React.Component {
         });
     }
 
-    validateLoginForm = (e) => {
+    validateForm = (e) => {
 
         let errors = {};
         const { formData } = this.state;
 
-        if (CustomValidators.isEmpty(formData.name)) {
-            errors.name = "Name can't be blank";
+        if (CustomValidators.isEmpty(formData.title)) {
+            errors.title = "Title can't be blank";
         }
 
-        if (!CustomValidators.isEmpty(formData.email) && !CustomValidators.isEmail(formData.email)) {
-            errors.email = "Please enter a valid email";
+        if (CustomValidators.isEmpty(formData.page_key)) {
+            errors.page_key = "Page Key can't be blank";
         }
 
-        if (!CustomValidators.isEmpty(formData.mobile) && !CustomValidators.isPhoneNumber(formData.mobile)) {
-            errors.mobile = "Please inter valid mobile number.";
+        if (CustomValidators.isEmpty(formData.description)) {
+            errors.description = "Description can't be blank";
         }
 
         if (CustomValidators.isEmpty(errors)) {
@@ -101,12 +102,12 @@ class PlayerEdit extends React.Component {
             errors: {},
         });
 
-        let errors = this.validateLoginForm();
+        let errors = this.validateForm();
         console.log('errors::::::', errors)
 
         if (!errors) {
 
-            ApisService.updatePlayerAccount(formData)
+            ApisService.updatePage(formData)
                 .then(response => {
 
                     if (response.status) {
@@ -115,7 +116,7 @@ class PlayerEdit extends React.Component {
                             loading: false,
                         });
                         GlobalProvider.successMessage(response.message);
-                        this.props.history.push('/players');
+                        this.props.history.push('/pages');
                     } else {
                         this.setState({
                             formSubmitted: false,
@@ -158,7 +159,7 @@ class PlayerEdit extends React.Component {
                             <div className="container">
                                 <div className="row p-b-60 p-t-60">
                                     <div className="col-lg-8 mx-auto text-white p-b-30">
-                                        <h3>Player Form </h3>
+                                        <h3>Page Form </h3>
                                     </div>
                                 </div>
                             </div>
@@ -166,54 +167,59 @@ class PlayerEdit extends React.Component {
                         <section className="pull-up">
                             <div className="container">
                                 <div className="row ">
-                                    <div className="col-lg-8 mx-auto  mt-2">
+                                    <div className="col-lg-12 mx-auto  mt-2">
                                         <div className="card py-3 m-b-30">
                                             <div className="card-body">
 
                                                 <form className="needs-validation" onSubmit={this.update}>
 
                                                     <h3 className="">Update Information</h3>
-
+                                                    
                                                     <div className="form-row">
                                                         <div className="form-group col-md-6">
-                                                            <label for="inputEmail6">Name*</label>
-                                                            <input type="text" className="form-control" name="name" defaultValue={formData.name} onKeyUp={this.handleChange} />
-                                                            {errors.name && <span className="error">{errors.name}</span>}
-                                                        </div>
-                                                        <div className="form-group col-md-6">
-                                                            <label for="inputEmail4">Email</label>
-                                                            <input type="email" className="form-control" name="email" defaultValue={formData.email} onKeyUp={this.handleChange} />
-                                                            {errors.email && <span className="error">{errors.email}</span>}
-                                                        </div>
-                                                    </div>
-                                                    <div className="form-row">
-                                                        <div className="form-group col-md-6">
-                                                            <label for="asd">Username</label>
-                                                            <input type="text" className="form-control" name="username" defaultValue={formData.username} readOnly />
-                                                        </div>
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <label for="inputAddress">Address</label>
-                                                        <input type="text" className="form-control" name="address" defaultValue={formData.address} onKeyUp={this.handleChange} />
-                                                        {errors.address && <span className="error">{errors.address}</span>}
-                                                    </div>
-                                                    <div className="form-row">
-                                                        <div className="form-group col-md-6">
-                                                            <label for="inputPassword4">Mobile</label>
-                                                            <input type="phone" className="form-control" name="mobile" defaultValue={formData.mobile} onKeyUp={this.handleChange} />
-                                                            {errors.mobile && <span className="error">{errors.mobile}</span>}
-                                                        </div>
-                                                    </div>
-                                                    <div className="form-row">
-                                                        <div className="form-group col-md-6">
-                                                            <label for="inputEmail4">Betting Status</label>
-                                                            <select className="form-control" name="is_betting_locked" value={formData.is_betting_locked} onChange={this.handleChange}>
-                                                                <option value={0}>Open</option>
-                                                                <option value={1}>Locked</option>
+                                                            <label for="inputEmail4">Category</label>
+                                                            <select className="form-control" name="category" value={formData.category} onChange={this.handleChange}>
+                                                                <option value={'Normal'}>Normal</option>
+                                                                <option value={'Featured'}>Featured</option>
                                                             </select>
                                                         </div>
+                                                    </div>
+                                                    <div className="form-row">
                                                         <div className="form-group col-md-6">
-                                                            <label for="inputEmail4">Account Status</label>
+                                                            <label for="inputEmail6">Title*</label>
+                                                            <input type="text" className="form-control" name="title" defaultValue={formData.title} onKeyUp={this.handleChange} />
+                                                            {errors.title && <span className="error">{errors.title}</span>}
+                                                        </div>
+                                                        <div className="form-group col-md-6">
+                                                            <label for="inputEmail4">Page Key*</label>
+                                                            <input type="page_key" className="form-control" name="page_key" defaultValue={formData.page_key} onKeyUp={this.handleChange} />
+                                                            {errors.page_key && <span className="error">{errors.page_key}</span>}
+                                                        </div>
+                                                    </div>
+                                                    <div className="form-row">
+                                                        <div className="form-group col-md-12">
+                                                            <label for="inputDOB4">Description</label>
+                                                            <textarea type="text" className="form-control" name="description" value={formData.description} onChange={this.handleChange} rows="50"></textarea>
+                                                            {errors.description && <span className="error">{errors.description}</span>}
+                                                        </div>
+                                                    </div>
+                                                    <div className="form-row">
+                                                        <div className="form-group col-md-12">
+                                                            <label for="inputDOB4">Meta Key</label>
+                                                            <textarea type="text" className="form-control" name="meta_key" value={formData.meta_key} onChange={this.handleChange} rows="2"></textarea>
+                                                            {errors.meta_key && <span className="error">{errors.meta_key}</span>}
+                                                        </div>
+                                                    </div>
+                                                    <div className="form-row">
+                                                        <div className="form-group col-md-12">
+                                                            <label for="inputDOB4">Meta Description</label>
+                                                            <textarea type="text" className="form-control" name="meta_description" value={formData.meta_description} onChange={this.handleChange} rows="5"></textarea>
+                                                            {errors.meta_description && <span className="error">{errors.meta_description}</span>}
+                                                        </div>
+                                                    </div>
+                                                    <div className="form-row">
+                                                        <div className="form-group col-md-6">
+                                                            <label for="inputEmail4">Status</label>
                                                             <select className="form-control" name="status" value={formData.status} onChange={this.handleChange}>
                                                                 <option value={1}>Active</option>
                                                                 <option value={0}>In-Active</option>
@@ -223,7 +229,7 @@ class PlayerEdit extends React.Component {
 
                                                     <button type="submit" className="btn btn-primary btn-cta" disabled={loading}>{loading ? 'Waiting...' : 'Submit'}</button>
                                                     &nbsp;&nbsp;
-                                                    <a href={"/players"} className="btn btn-dark btn-cta">Cancel</a>
+                                                    <a href={"/pages"} className="btn btn-dark btn-cta">Cancel</a>
 
                                                 </form>
 
@@ -245,4 +251,4 @@ class PlayerEdit extends React.Component {
     }
 }
 
-export default PlayerEdit;
+export default PageEdit;

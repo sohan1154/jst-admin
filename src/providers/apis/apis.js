@@ -1,8 +1,8 @@
 import axios from 'axios';
 import * as GlobalProvider from '../globals/globals';
 
-axios.defaults.baseURL = 'http://localhost:3001';
-// axios.defaults.baseURL = 'http://13.232.131.120:3001';
+// axios.defaults.baseURL = 'http://localhost:3001';
+axios.defaults.baseURL = 'http://3.135.18.102:3001';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 function updateHeaders() {
@@ -66,231 +66,142 @@ export const changePassword = (params) => {
     return axios.post(`/settings/change-password`, params).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-// Sub-Admins 
-export const createSubAdminAccount = (params) => {
+// Users 
+export const getUsers = (role) => {
     updateHeaders();
-    return axios.post(`/sub-admins/create-account`, params).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.get(`/users/list/${role}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const getSubAdminUsers = (role) => {
+export const getArchiveUsers = (role) => {
     updateHeaders();
-    return axios.get(`/sub-admins/list/${role}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.get(`/users/archive/${role}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const getSubAdminArchiveUsers = (role) => {
+export const createUserAccount = (params) => {
     updateHeaders();
-    return axios.get(`/sub-admins/archive/${role}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.post(`/users/create-account`, params).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const updateSubAdminAccount = (params) => {
+export const updateUserAccount = (params) => {
     updateHeaders();
-    return axios.post(`/sub-admins/update-account`, params).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.post(`/users/update-account`, params).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const getSubAdminAccountDetail = (id) => {
+export const getUserAccountDetail = (id) => {
     updateHeaders();
-    return axios.get(`/sub-admins/detail-account/${id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.get(`/users/detail-account/${id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const deleteSubAdminAccount = (id) => {
+export const deleteUserAccount = (id) => {
     updateHeaders();
-    return axios.put(`/sub-admins/delete-account/${id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.put(`/users/delete-account/${id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const restoreSubAdminAccount = (id) => {
+export const restoreUserAccount = (id) => {
     updateHeaders();
-    return axios.put(`/sub-admins/restore-account/${id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.put(`/users/restore-account/${id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const changeSubAdminAccountStatus = (id, status) => {
+export const changeUserAccountStatus = (id, status) => {
     updateHeaders();
-    return axios.put(`/sub-admins/change-status/${id}/${status}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.put(`/users/change-status/${id}/${status}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const changeSubAdminPassword = (params) => {
+export const changeUserPassword = (params) => {
     updateHeaders();
-    return axios.post(`/sub-admins/change-password`, params).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.post(`/users/change-password`, params).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-// Masters
-export const createMasterAccount = (params) => {
+// Pages 
+export const getPages = () => {
     updateHeaders();
-    return axios.post(`/masters/create-account`, params).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.get(`/pages/list`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const getMasterUsers = (role) => {
+export const getArchivePages = () => {
     updateHeaders();
-    return axios.get(`/masters/list/${role}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.get(`/pages/archive`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const getMasterArchiveUsers = (role) => {
+export const createPage = (params) => {
     updateHeaders();
-    return axios.get(`/masters/archive/${role}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.post(`/pages/create`, params).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const updateMasterAccount = (params) => {
+export const updatePage = (params) => {
     updateHeaders();
-    return axios.post(`/masters/update-account`, params).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.post(`/pages/update`, params).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const getMasterAccountDetail = (id) => {
+export const getPageDetail = (id) => {
     updateHeaders();
-    return axios.get(`/masters/detail-account/${id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.get(`/pages/detail/${id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const deleteMasterAccount = (id) => {
+export const deletePage = (id) => {
     updateHeaders();
-    return axios.put(`/masters/delete-account/${id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.put(`/pages/delete/${id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const restoreMasterAccount = (id) => {
+export const restorePage = (id) => {
     updateHeaders();
-    return axios.put(`/masters/restore-account/${id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.put(`/pages/restore/${id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const changeMasterAccountStatus = (id, status) => {
+export const changePageStatus = (id, status) => {
     updateHeaders();
-    return axios.put(`/masters/change-status/${id}/${status}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.put(`/pages/change-status/${id}/${status}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const changeMasterPassword = (params) => {
+// Contact-Us
+export const getContactUs = () => {
     updateHeaders();
-    return axios.post(`/masters/change-password`, params).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.get(`/contact-us/list`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const addMasterCredit = (params) => {
+export const getContactUsDetail = (id) => {
     updateHeaders();
-    return axios.post(`/masters/add-credit`, params).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.get(`/contact-us/detail/${id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-// Players 
-export const createPlayerAccount = (params) => {
+// Plans 
+export const getPlans = (role) => {
     updateHeaders();
-    return axios.post(`/players/create-account`, params).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.get(`/plans/list`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const getPlayerUsers = (role) => {
+export const getArchivePlans = (role) => {
     updateHeaders();
-    return axios.get(`/players/list/${role}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.get(`/plans/archive`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const getPlayerArchiveUsers = (role) => {
+export const createPlan = (params) => {
     updateHeaders();
-    return axios.get(`/players/archive/${role}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.post(`/plans/create-plan`, params).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const updatePlayerAccount = (params) => {
+export const updatePlan = (params) => {
     updateHeaders();
-    return axios.post(`/players/update-account`, params).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.post(`/plans/update-plan`, params).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const getPlayerAccountDetail = (id) => {
+export const getPlanDetail = (id) => {
     updateHeaders();
-    return axios.get(`/players/detail-account/${id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.get(`/plans/detail-plan/${id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const deletePlayerAccount = (id) => {
+export const deletePlan = (id) => {
     updateHeaders();
-    return axios.put(`/players/delete-account/${id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.put(`/plans/delete-plan/${id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const restorePlayerAccount = (id) => {
+export const restorePlan = (id) => {
     updateHeaders();
-    return axios.put(`/players/restore-account/${id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.put(`/plans/restore-plan/${id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const changePlayerAccountStatus = (id, status) => {
+export const changePlanStatus = (id, status) => {
     updateHeaders();
-    return axios.put(`/players/change-status/${id}/${status}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
+    return axios.put(`/plans/change-status/${id}/${status}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
 }
 
-export const changePlayerPassword = (params) => {
-    updateHeaders();
-    return axios.post(`/players/change-password`, params).then(response => readResponse(response)).catch(error => { throw readError(error); });
-}
-
-export const addPlayerCredit = (params) => {
-    updateHeaders();
-    return axios.post(`/players/add-credit`, params).then(response => readResponse(response)).catch(error => { throw readError(error); });
-}
-
-// Credits 
-export const getCreditsHistory = () => {
-    updateHeaders();
-    return axios.get(`/credits/history`).then(response => readResponse(response)).catch(error => { throw readError(error); });
-}
-
-// Third Party APIs
-export const callThirtPartyAPI_getSports = () => {
-    updateHeaders();
-    return axios.get(`/call-third-party-apis/get-sports`).then(response => readResponse(response)).catch(error => { throw readError(error); });
-}
-
-export const callThirtPartyAPI_getSeries = (sportsID) => {
-    updateHeaders();
-    return axios.get(`/call-third-party-apis/get-series/${sportsID}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
-}
-
-export const callThirtPartyAPI_getMatches = (sportsID, seriesID) => {
-    updateHeaders();
-    return axios.get(`/call-third-party-apis/get-matches/${sportsID}/${seriesID}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
-}
-
-export const callThirtPartyAPI_getMarkets = (eventID) => {
-    updateHeaders();
-    return axios.get(`/call-third-party-apis/get-markets/${eventID}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
-}
-
-export const callThirtPartyAPI_getMarketsSelection = (marketID) => {
-    updateHeaders();
-    return axios.get(`/call-third-party-apis/get-markets-selection/${marketID}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
-}
-
-export const callThirtPartyAPI_getMarketOdds = (marketID) => {
-    updateHeaders();
-    return axios.get(`/call-third-party-apis/get-market-odds/${marketID}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
-}
-
-export const callThirtPartyAPI_getSession = (matchID) => {
-    updateHeaders();
-    return axios.get(`/call-third-party-apis/get-session/${matchID}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
-}
-
-export const callThirtPartyAPI_getScore = (matchID) => {
-    updateHeaders();
-    return axios.get(`/call-third-party-apis/get-score/${matchID}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
-}
-
-// Sports
-export const getSports = () => {
-    updateHeaders();
-    return axios.get(`/sports/listing`).then(response => readResponse(response)).catch(error => { throw readError(error); });
-}
-
-export const changeSportsStatus = (id, status) => {
-    updateHeaders();
-    return axios.put(`/sports/change-status/${id}/${status}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
-}
-
-// Series
-export const getSeries = () => {
-    updateHeaders();
-    return axios.get(`/series/listing`).then(response => readResponse(response)).catch(error => { throw readError(error); });
-}
-
-export const changeSeriesStatus = (id, status) => {
-    updateHeaders();
-    return axios.put(`/series/change-status/${id}/${status}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
-}
-
-// list sub admin wise masters 
-export const getListSubAdminWiseMasters = (parent_id, status) => {
-    updateHeaders();
-    return axios.get(`/list_sub_admin_wise_masters/${parent_id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
-}
-
-// list master wise players 
-export const getListMasterWisePlayers = (parent_id, status) => {
-    updateHeaders();
-    return axios.get(`/list_master_wise_players/${parent_id}`).then(response => readResponse(response)).catch(error => { throw readError(error); });
-}

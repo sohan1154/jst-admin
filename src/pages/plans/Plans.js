@@ -1,50 +1,44 @@
 import React from 'react';
 import * as GlobalProvider from '../../providers/globals/globals';
 import Header from '../../components/elements/Header';
+import Pagenation from '../../components/elements/Pagenation';
 import RecordNotFound from '../../components/elements/RecordNotFound';
 import * as ApisService from "../../providers/apis/apis";
 import { Roller } from "react-awesome-spinners";
 import SideMenuData from '../../components/elements/SideMenuData';
 
-class SubAdminWiseMasters extends React.Component {
+class Plans extends React.Component {
 
     constructor(props) {
         super(props);
 
-        let currentUser = GlobalProvider.getUser();
-
         this.state = {
             entries: [],
-            sub_admin: {},
             errors: {},
             loading: false,
             currentUser: GlobalProvider.getUser(),
-            open: false,
         }
     }
 
     componentDidMount() {
 
-        let parent_id = this.props.match.params.parent_id;
-
-        this.getUsers(parent_id);
+        this.getData();
     }
 
-    getUsers = (parent_id) => {
+    getData = () => {
 
         this.setState({
             loading: true,
             errors: {},
         });
 
-        ApisService.getListSubAdminWiseMasters(parent_id)
+        ApisService.getPlans()
             .then(response => {
 
                 if (response.status) {
                     this.setState({
                         loading: false,
                         entries: response.data,
-                        sub_admin: response.sub_admin,
                     });
                 } else {
                     this.setState({
@@ -63,9 +57,87 @@ class SubAdminWiseMasters extends React.Component {
             });
     }
 
+    changeStatus = (id, status) => {
+
+        let _this = this;
+
+        // document.body.classList.add('display-loader');
+
+        GlobalProvider.confirmBox("Are you Sure? You want to change status of this plan.", (isTrue) => {
+            if (isTrue) {
+                ApisService.changePlanStatus(id, status)
+                    .then(response => {
+
+                        if (response.status) {
+
+                            // update item status and set updated value into state
+                            const { entries } = _this.state;
+
+                            let entriesNew = entries.filter((item) => {
+                                if (item.id == id) {
+                                    item.status = status;
+                                }
+
+                                return item;
+                            });
+
+                            _this.setState({
+                                entries: entriesNew,
+                            });
+
+                            GlobalProvider.successMessage(response.message);
+
+                        } else {
+                            GlobalProvider.errorMessage(response.message);
+                        }
+
+                    }).catch(error => {
+                        GlobalProvider.errorMessage(error.message);
+                    });
+            }
+        });
+    }
+
+    deletePlan = (id, index) => {
+
+        let _this = this;
+
+        GlobalProvider.confirmBox("Are you Sure? You want to delete this plan.", (isTrue) => {
+            if (isTrue) {
+                ApisService.deletePlan(id)
+                    .then(response => {
+
+                        if (response.status) {
+
+                            // remove item from array 
+                            const { entries } = _this.state;
+
+                            let entriesNew = entries.filter((item) => {
+                                if (item.id != id) {
+                                    return item;
+                                }
+                            });
+
+                            _this.setState({
+                                entries: entriesNew,
+                            });
+
+                            GlobalProvider.successMessage(response.message);
+
+                        } else {
+                            GlobalProvider.errorMessage(response.message);
+                        }
+
+                    }).catch(error => {
+                        GlobalProvider.errorMessage(error.message);
+                    });
+            }
+        })
+    }
+
     render() {
 
-        const { entries, sub_admin, loading, open, errors } = this.state;
+        const { entries, loading } = this.state;
         let count = 1;
 
         return (
@@ -81,9 +153,7 @@ class SubAdminWiseMasters extends React.Component {
                             <div className="container  m-b-30">
                                 <div className="row">
                                     <div className="col-12 text-white p-t-40 p-b-90">
-                                        <h4 className="">
-                                            <a href={"/sub-admins"} className="in-active"> Sub Admins </a> &raquo; Masters of ({sub_admin.name})
-                                        </h4>
+                                        <h4 className="">Plans</h4>
                                     </div>
                                 </div>
                             </div>
@@ -105,13 +175,12 @@ class SubAdminWiseMasters extends React.Component {
                                                     <table id="example-height" className="table   " style={{ width: "100%" }}>
                                                         <thead>
                                                             <tr>
-                                                                <th>Name</th>
-                                                                <th>Username</th>
-                                                                <th>Mobile</th>
-                                                                <th>Address</th>
-                                                                <th>Avl. Credit</th>
-                                                                <th>Status</th>
-                                                                <th>Actions</th>
+                                                            <th>Name</th>
+                                                            <th>Amount (INR)</th>
+                                                            <th>Validity (in days)</th>
+                                                            <th>Allowed Members</th>
+                                                            <th>Status</th>
+                                                            <th>Actions</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -119,12 +188,11 @@ class SubAdminWiseMasters extends React.Component {
                                                             {entries.map((item, index) =>
                                                                 <tr key={item.id} id={'RecordID_' + item.id}>
                                                                     <td>{item.name}</td>
-                                                                    <td>{item.username}</td>
-                                                                    <td>{item.mobile}</td>
-                                                                    <td>{item.address}</td>
-                                                                    <td className="right">{item.credit}</td>
-                                                                    <td>
-                                                                        <span className="changeStatus">
+                                                                    <td>{item.amount}</td>
+                                                                    <td>{item.validity}</td>
+                                                                    <td>{item.allowed_members}</td>
+                                                                    <td className="text-align-center">
+                                                                        <span className="changeStatus" onClick={() => this.changeStatus(item.id, !item.status)}>
                                                                             {item.status ? (
                                                                                 <button type="button" className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-success" title="Disable"><i className="mdi mdi-check"></i></button>
                                                                             ) : (
@@ -133,7 +201,9 @@ class SubAdminWiseMasters extends React.Component {
                                                                         </span>
                                                                     </td>
                                                                     <td>
-                                                                        <a href={"/master-wise-players/" + item.id} className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-secondary" title="Players"><i className="mdi mdi-account-details"></i></a>
+                                                                        <a href={"/plans-view/" + item.id} className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-info" title="Detail"><i className="mdi mdi-eye"></i></a>
+                                                                        <a href={"/plans-edit/" + item.id} className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-warning" title="Edit"><i className="mdi mdi-square-edit-outline"></i></a>
+                                                                        <button className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-danger" title="Delete" onClick={() => this.deletePlan(item.id, index)}><i className="mdi mdi-delete"></i></button>
                                                                     </td>
                                                                 </tr>
                                                             )}
@@ -151,10 +221,11 @@ class SubAdminWiseMasters extends React.Component {
                     </section>
 
                 </main>
+
             </>
         );
 
     }
 }
 
-export default SubAdminWiseMasters;
+export default Plans;

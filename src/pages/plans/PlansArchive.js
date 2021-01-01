@@ -7,7 +7,7 @@ import * as ApisService from "../../providers/apis/apis";
 import { Roller } from "react-awesome-spinners";
 import SideMenuData from '../../components/elements/SideMenuData';
 
-class SubAdminsArchive extends React.Component {
+class PlansArchive extends React.Component {
 
     constructor(props) {
         super(props);
@@ -22,17 +22,17 @@ class SubAdminsArchive extends React.Component {
 
     componentDidMount() {
 
-        this.getArchiveUsers('Sub-Admin');
+        this.getData();
     }
 
-    getArchiveUsers = (role) => {
+    getData = () => {
 
         this.setState({
             loading: true,
             errors: {},
         });
 
-        ApisService.getSubAdminArchiveUsers(role)
+        ApisService.getArchivePlans()
             .then(response => {
 
                 if (response.status) {
@@ -57,13 +57,13 @@ class SubAdminsArchive extends React.Component {
             });
     }
 
-    restoreAccount = (id, index) => {
+    restorePlan = (id, index) => {
 
         let _this = this;
 
-        GlobalProvider.confirmBox("Are you Sure? You want to restore this account.", (isTrue) => {
+        GlobalProvider.confirmBox("Are you Sure? You want to restore this plan.", (isTrue) => {
             if (isTrue) {
-                ApisService.restoreSubAdminAccount(id)
+                ApisService.restorePlan(id)
                     .then(response => {
 
                         if (response.status) {
@@ -112,7 +112,7 @@ class SubAdminsArchive extends React.Component {
                             <div className="container  m-b-30">
                                 <div className="row">
                                     <div className="col-12 text-white p-t-40 p-b-90">
-                                        <h4 className="">Archived Sub Admins</h4>
+                                        <h4 className="">Archived Plans</h4>
                                     </div>
                                 </div>
                             </div>
@@ -135,9 +135,10 @@ class SubAdminsArchive extends React.Component {
                                                         <thead>
                                                             <tr>
                                                                 <th>Name</th>
-                                                                <th>Username</th>
-                                                                <th>Mobile</th>
-                                                                <th>Address</th>
+                                                                <th>Amount (INR)</th>
+                                                                <th>Validity (in days)</th>
+                                                                <th>Allowed Members</th>
+                                                                <th>Deleted At</th>
                                                                 <th>Actions</th>
                                                             </tr>
                                                         </thead>
@@ -146,11 +147,12 @@ class SubAdminsArchive extends React.Component {
                                                             {entries.map((item, index) =>
                                                                 <tr key={item.id} id={'RecordID_' + item.id}>
                                                                     <td>{item.name}</td>
-                                                                    <td>{item.username}</td>
-                                                                    <td>{item.mobile}</td>
-                                                                    <td>{item.address}</td>
+                                                                    <td>{item.amount}</td>
+                                                                    <td>{item.validity}</td>
+                                                                    <td>{item.allowed_members}</td>
+                                                                    <td>{item.deleted_at}</td>
                                                                     <td>
-                                                                        <button className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-success" title="Restore" onClick={() => this.restoreAccount(item.id, index)}><i className="mdi mdi-restore"></i></button>
+                                                                        <button className="btn btn-sm m-b-15 ml-2 mr-2 btn-rounded-circle btn-success" title="Restore" onClick={() => this.restorePlan(item.id, index)}><i className="mdi mdi-restore"></i></button>
                                                                     </td>
                                                                 </tr>
                                                             )}
@@ -175,4 +177,4 @@ class SubAdminsArchive extends React.Component {
     }
 }
 
-export default SubAdminsArchive;
+export default PlansArchive;
