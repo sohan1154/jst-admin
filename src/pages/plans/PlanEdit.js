@@ -81,10 +81,7 @@ class PlanEdit extends React.Component {
             errors.amount = "Please inter valid amount.";
         }
 
-        if (CustomValidators.isEmpty(formData.allowed_members)) {
-            errors.allowed_members = "Allowed Members can't be blank";
-        }
-        else if (!CustomValidators.numberOnly(formData.allowed_members)) {
+        if (!CustomValidators.numberOnly(formData.allowed_members)) {
             errors.allowed_members = "Please inter valid Allowed Members.";
         }
 
